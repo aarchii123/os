@@ -48,7 +48,8 @@ const semaphoreCode = `public class ResourceManager {
             new User(i).start();
         }
     }
-}`;
+}
+`;
 
 export default function ProcessSync() {
   const [output, setOutput] = useState<string[]>([]);
@@ -220,11 +221,11 @@ export default function ProcessSync() {
     setIsRunning(true);
     setOutput([]);
 
-    // Scroll to visualization after a short delay
+    // Update scrolling behavior to be more reliable
     setTimeout(() => {
       outputRef.current?.scrollIntoView({ 
         behavior: 'smooth',
-        block: 'start'
+        block: 'center'
       });
     }, 100);
   };
@@ -261,7 +262,7 @@ export default function ProcessSync() {
         </ul>
       </div>
 
-      <div className="space-y-8" ref={outputRef}>
+      <div className="space-y-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -287,6 +288,7 @@ export default function ProcessSync() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
+          ref={outputRef}
         >
           <CodeExecution output={output} isRunning={isRunning} />
         </motion.div>
