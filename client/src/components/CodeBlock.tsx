@@ -30,19 +30,22 @@ export default function CodeBlock({ code, onExecute }: CodeBlockProps) {
             className="hover:bg-primary/10"
           >
             <PlayCircle className="w-4 h-4 mr-2" />
-            Execute
+            <span className="hidden sm:inline">Execute</span>
           </Button>
         )}
       </div>
-      <motion.pre
+      <motion.div
         animate={{ 
           backgroundColor: isHighlighted ? 'var(--primary)' : 'transparent',
           color: isHighlighted ? 'white' : 'inherit'
         }}
-        className="p-4 font-mono text-sm overflow-x-auto transition-colors"
+        className="relative"
       >
-        <code>{code}</code>
-      </motion.pre>
+        <pre className="p-4 font-mono text-[13px] md:text-sm overflow-x-auto transition-colors">
+          <code>{code}</code>
+        </pre>
+        <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-background/10 pointer-events-none" />
+      </motion.div>
     </Card>
   );
 }

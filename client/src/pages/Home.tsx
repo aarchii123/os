@@ -26,16 +26,16 @@ const fadeUpItem = {
 
 export default function Home() {
   return (
-    <div className="max-w-4xl mx-auto pt-8">
+    <div className="max-w-4xl mx-auto pt-4 md:pt-8 px-4">
       <motion.div
         variants={fadeUpItem}
         initial="hidden"
         animate="show"
-        className="text-center mb-16"
+        className="text-center mb-12 md:mb-16"
       >
         <div className="inline-block">
           <motion.h1 
-            className="text-5xl font-bold tracking-tight mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent"
+            className="text-4xl md:text-5xl font-bold tracking-tight mb-4 md:mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
@@ -44,7 +44,7 @@ export default function Home() {
           </motion.h1>
         </div>
         <motion.p 
-          className="text-muted-foreground text-lg max-w-2xl mx-auto"
+          className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
@@ -58,7 +58,7 @@ export default function Home() {
         variants={container}
         initial="hidden"
         animate="show"
-        className="grid gap-8 md:grid-cols-3"
+        className="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-3"
       >
         <ProjectCard
           title="Process Synchronization"
