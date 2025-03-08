@@ -12,9 +12,13 @@ import Footer from "@/components/Footer";
 
 function Router() {
   return (
-    <div className="min-h-screen bg-background flex flex-col bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-background via-background to-background/95">
+    <div className="min-h-screen flex flex-col bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background relative overflow-hidden">
+      <div className="absolute inset-0 bg-grid-white/10 bg-[size:20px_20px] pointer-events-none" />
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
+      </div>
       <Navbar />
-      <main className="container mx-auto px-4 py-12 flex-grow">
+      <main className="container mx-auto px-4 py-16 flex-grow relative">
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/process-sync" component={ProcessSync} />
