@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import CodeBlock from '@/components/CodeBlock';
 import CodeExecution from '@/components/CodeExecution';
@@ -55,6 +55,21 @@ export default function ProcessSync() {
   const [output, setOutput] = useState<string[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const outputRef = useRef<HTMLDivElement>(null);
+
+  // Add useEffect to handle scrolling when output changes
+  useEffect(() => {
+    if (isRunning && outputRef.current) {
+      outputRef.current.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'center'
+      });
+    }
+  }, [isRunning]);
+
+  const executeCode = () => {
+    setIsRunning(true);
+    setOutput([]);
+  };
 
   const executionStates = [
     {
@@ -216,19 +231,6 @@ export default function ProcessSync() {
       output: "Simulation complete."
     }
   ];
-
-  const executeCode = () => {
-    setIsRunning(true);
-    setOutput([]);
-
-    // Update scrolling behavior to be more reliable
-    setTimeout(() => {
-      outputRef.current?.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'center'
-      });
-    }, 100);
-  };
 
   return (
     <motion.div
