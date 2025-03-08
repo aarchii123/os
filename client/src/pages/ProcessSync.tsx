@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import CodeBlock from '@/components/CodeBlock';
 import CodeExecution from '@/components/CodeExecution';
@@ -53,6 +53,7 @@ const semaphoreCode = `public class ResourceManager {
 export default function ProcessSync() {
   const [output, setOutput] = useState<string[]>([]);
   const [isRunning, setIsRunning] = useState(false);
+  const outputRef = useRef<HTMLDivElement>(null);
 
   const executionStates = [
     {
@@ -218,7 +219,14 @@ export default function ProcessSync() {
   const executeCode = () => {
     setIsRunning(true);
     setOutput([]);
-    // simulation array is no longer used.
+
+    // Scroll to visualization after a short delay
+    setTimeout(() => {
+      outputRef.current?.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }, 100);
   };
 
   return (
@@ -227,30 +235,61 @@ export default function ProcessSync() {
       animate={{ opacity: 1 }}
       className="max-w-4xl mx-auto"
     >
-      <h1 className="text-3xl font-bold mb-6">Resource Allocation with Race Condition</h1>
+      <h1 className="text-3xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+        Resource Allocation with Race Condition
+      </h1>
 
       <div className="prose dark:prose-invert mb-8">
-        <p>
+        <p className="text-lg leading-relaxed">
           This example demonstrates a resource allocation system managing software licenses.
           It handles race conditions using semaphores and synchronized blocks to prevent
           concurrent access issues when multiple users request licenses simultaneously.
         </p>
-        <ul>
-          <li>Uses a semaphore to limit the number of concurrent licenses</li>
-          <li>Implements synchronized blocks to safely update the active users count</li>
-          <li>Simulates realistic usage patterns with multiple concurrent users</li>
+        <ul className="space-y-2">
+          <li className="flex items-center gap-2">
+            <span className="inline-block w-2 h-2 rounded-full bg-primary" />
+            Uses a semaphore to limit the number of concurrent licenses
+          </li>
+          <li className="flex items-center gap-2">
+            <span className="inline-block w-2 h-2 rounded-full bg-primary" />
+            Implements synchronized blocks to safely update the active users count
+          </li>
+          <li className="flex items-center gap-2">
+            <span className="inline-block w-2 h-2 rounded-full bg-primary" />
+            Simulates realistic usage patterns with multiple concurrent users
+          </li>
         </ul>
       </div>
 
-      <div className="space-y-8">
-        <CodeBlock code={semaphoreCode} onExecute={executeCode} />
-        <CodeVisualizer 
-          code={semaphoreCode}
-          executionStates={executionStates}
-          isRunning={isRunning}
-          onComplete={() => setIsRunning(false)}
-        />
-        <CodeExecution output={output} isRunning={isRunning} />
+      <div className="space-y-8" ref={outputRef}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <CodeBlock code={semaphoreCode} onExecute={executeCode} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <CodeVisualizer 
+            code={semaphoreCode}
+            executionStates={executionStates}
+            isRunning={isRunning}
+            onComplete={() => setIsRunning(false)}
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <CodeExecution output={output} isRunning={isRunning} />
+        </motion.div>
       </div>
     </motion.div>
   );
