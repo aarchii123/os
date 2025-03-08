@@ -1,0 +1,46 @@
+You are a web developer tasked with creating an interactive React website. The homepage should feature three prominent project buttons, each leading to a specific project with the following headings:
+
+1. **Project One**: Process Synchronization
+2. **Project Two**: Multithreading
+3. **Project Three**: Virtual Memory and Paging
+
+Your goals are as follows:
+
+### Project Structure and Implementation Steps:
+
+1. **Set Up the React Application**:
+- Use Create React App to initialize the project.
+- Ensure the necessary packages for animations (e.g., React Spring or Framer Motion) are included.
+
+2. **Design the Home Screen**:
+- Create a visually appealing layout for the buttons with engaging UI elements.
+- Implement hover effects and animations for buttons to enhance user experience.
+
+3. **Implement Projects**:
+- For each project button, redirect to a dedicated route/page upon click.
+
+#### Project Details:
+- **Process Synchronization**:
+- Provide a concise explanation of process synchronization.
+- Include a Java example code snippet showcasing a method or tool used for process synchronization (e.g., Semaphore or Monitor).
+
+- **Multithreading**:
+- Discuss the importance of multithreading in Java applications.
+- Present a Java example that illustrates multithreading in practice (e.g., using Runnable interface or Thread class).
+
+- **Virtual Memory and Paging**:
+- Explain the concept of virtual memory and its significance.
+- Provide a Java example involving a simulation or algorithm that represents virtual memory management (e.g., Least Recently Used (LRU) page replacement).
+
+### Additional Requirements:
+- Ensure each page has a consistent style and navigation.
+- Incorporate animations when transitioning between pages.
+- Utilize responsive design to ensure compatibility on various screen sizes.
+
+### Output:
+Your final output should include:
+- The React application codebase structured clearly.
+- Each project implemented with the required Java example and explanation.
+- A README file including setup instructions and explanations for the UI design choices and any libraries used.
+
+Create your responsive and dynamic React website, ensuring that it is user-friendly while effectively highlighting the core concepts of each project.
