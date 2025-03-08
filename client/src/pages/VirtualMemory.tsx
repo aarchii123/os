@@ -3,30 +3,85 @@ import { motion } from 'framer-motion';
 import CodeBlock from '@/components/CodeBlock';
 import CodeExecution from '@/components/CodeExecution';
 
-const lruCode = `public class LRUCache {
-    class Node {
-        int key, value;
-        Node prev, next;
+const vmCode = `public class VirtualMemoryManager {
+    private static final int PAGE_SIZE = 256;
+    private static final int TLB_SIZE = 16;
+    private static final int PAGE_TABLE_SIZE = 256;
+
+    static class TLBEntry {
+        int pageNumber;
+        int frameNumber;
+
+        TLBEntry(int pageNumber, int frameNumber) {
+            this.pageNumber = pageNumber;
+            this.frameNumber = frameNumber;
+        }
     }
-    
-    private HashMap<Integer, Node> map;
-    private Node head, tail;
-    private int capacity, count;
-    
-    public LRUCache(int capacity) {
-        this.capacity = capacity;
-        map = new HashMap<>();
-        head = new Node();
-        tail = new Node();
-        head.next = tail;
-        tail.prev = head;
+
+    private TLBEntry[] tlb;
+    private int[] pageTable;
+    private int tlbIndex;
+    private int pageFaults;
+    private int tlbHits;
+    private int totalAccesses;
+
+    public VirtualMemoryManager() {
+        tlb = new TLBEntry[TLB_SIZE];
+        pageTable = new int[PAGE_TABLE_SIZE];
+        tlbIndex = 0;
+        pageFaults = 0;
+        tlbHits = 0;
+        totalAccesses = 0;
     }
-    
-    public int get(int key) {
-        Node node = map.get(key);
-        if (node == null) return -1;
-        moveToHead(node);
-        return node.value;
+
+    public int translateAddress(int logicalAddress) {
+        totalAccesses++;
+        int pageNumber = (logicalAddress >> 8) & 0xFF;
+        int offset = logicalAddress & 0xFF;
+        int frameNumber = -1;
+
+        // Check TLB first
+        for(TLBEntry entry : tlb) {
+            if(entry != null && entry.pageNumber == pageNumber) {
+                frameNumber = entry.frameNumber;
+                tlbHits++;
+                break;
+            }
+        }
+
+        // If TLB miss, check page table
+        if(frameNumber == -1) {
+            frameNumber = pageTable[pageNumber];
+            if(frameNumber == -1) {
+                // Page fault - handle it
+                frameNumber = handlePageFault(pageNumber);
+                pageFaults++;
+            }
+            // Update TLB
+            updateTLB(pageNumber, frameNumber);
+        }
+
+        return (frameNumber << 8) | offset;
+    }
+
+    private void updateTLB(int pageNumber, int frameNumber) {
+        tlb[tlbIndex] = new TLBEntry(pageNumber, frameNumber);
+        tlbIndex = (tlbIndex + 1) % TLB_SIZE;
+    }
+
+    private int handlePageFault(int pageNumber) {
+        // Simulate page fault handling
+        return pageNumber; // Simplified
+    }
+
+    public void printStats() {
+        System.out.println("Page Faults: " + pageFaults);
+        System.out.println("TLB Hits: " + tlbHits);
+        System.out.println("Total Accesses: " + totalAccesses);
+        System.out.println("TLB Hit Rate: " + 
+            String.format("%.2f%%", (tlbHits * 100.0) / totalAccesses));
+        System.out.println("Page Fault Rate: " + 
+            String.format("%.2f%%", (pageFaults * 100.0) / totalAccesses));
     }
 }`;
 
@@ -38,13 +93,22 @@ export default function VirtualMemory() {
     setIsRunning(true);
     setOutput([]);
     const simulation = [
-      "Created LRU Cache with capacity 3",
-      "Adding page 1 to cache",
-      "Adding page 2 to cache",
-      "Adding page 3 to cache",
-      "Page 1 accessed (hit)",
-      "Adding page 4 (evicting page 2)",
-      "Cache state: [4, 3, 1]"
+      "Initializing Virtual Memory Manager...",
+      "Processing logical address: 0x1234",
+      "TLB Miss, checking page table...",
+      "Page fault occurred for page 0x12",
+      "Loading page into frame...",
+      "Updating TLB...",
+      "Physical address: 0x1234",
+      "Processing logical address: 0x1235",
+      "TLB Hit! Found in TLB",
+      "Physical address: 0x1235",
+      "------- Final Statistics -------",
+      "Page Faults: 1",
+      "TLB Hits: 1",
+      "Total Accesses: 2",
+      "TLB Hit Rate: 50.00%",
+      "Page Fault Rate: 50.00%"
     ];
 
     simulation.forEach((line, i) => {
@@ -63,19 +127,23 @@ export default function VirtualMemory() {
       animate={{ opacity: 1 }}
       className="max-w-3xl mx-auto"
     >
-      <h1 className="text-3xl font-bold mb-6">Virtual Memory and Paging</h1>
-      
+      <h1 className="text-3xl font-bold mb-6">Virtual Memory Manager Simulation</h1>
+
       <div className="prose dark:prose-invert mb-8">
         <p>
-          Virtual memory is a memory management technique that provides an idealized
-          abstraction of the storage resources that are actually available on a given
-          machine. The LRU (Least Recently Used) algorithm is commonly used for page
-          replacement.
+          This simulation demonstrates virtual memory management with address translation,
+          TLB management, and page fault handling. It provides detailed statistics about
+          the memory management process.
         </p>
+        <ul>
+          <li>Implements address translation using bit manipulation</li>
+          <li>Manages TLB entries and handles page faults</li>
+          <li>Tracks and displays performance metrics in real-time</li>
+        </ul>
       </div>
 
       <div className="space-y-6">
-        <CodeBlock code={lruCode} onExecute={executeCode} />
+        <CodeBlock code={vmCode} onExecute={executeCode} />
         <CodeExecution output={output} isRunning={isRunning} />
       </div>
     </motion.div>

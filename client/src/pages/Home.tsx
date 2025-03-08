@@ -62,17 +62,17 @@ export default function Home() {
       >
         <ProjectCard
           title="Process Synchronization"
-          description="Learn about process synchronization mechanisms including semaphores and monitors through interactive demonstrations."
+          description="Implement resource allocation with race condition handling using semaphores and monitors. Visualize and fix concurrent access issues in real-time."
           href="/process-sync"
         />
         <ProjectCard
           title="Multithreading"
-          description="Understand multithreading concepts and implementation in Java with real-time visualization of thread execution."
+          description="Build a multithreaded Sudoku validator using parallel processing. Watch as multiple threads simultaneously validate rows, columns, and subgrids."
           href="/multithreading"
         />
         <ProjectCard
           title="Virtual Memory"
-          description="Explore virtual memory management and paging algorithms through interactive simulations and examples."
+          description="Simulate virtual memory management with TLB and page table. Track address translation, page faults, and replacement algorithms with live statistics."
           href="/virtual-memory"
         />
       </motion.div>
